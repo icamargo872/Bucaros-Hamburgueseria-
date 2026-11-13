@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#391011">
+  <meta name="description" content="BÚCAROS: hamburguesería artesanal. Menú y carrito de compras interactivo. Proyecto académico de demostración, sin compras reales.">
+  <title>Hamburguesería BÚCAROS | Tienda de demostración</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="announcement">DESDE SIEMPRE · EL SABOR DE BUCARAMANGA · PROYECTO ACADÉMICO</div>
+  <header class="site-header" id="inicio">
+    <div class="header-inner container">
+      <a href="#inicio" class="brand" aria-label="Hamburguesería Búcaros, volver al inicio">
+        <img src="assets/logo-bucaros.png" alt="Logotipo oficial de Hamburguesería Búcaros" />
+      </a>
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <a href="#inicio">INICIO</a><a href="#menu">MENÚ</a><a href="#nosotros">NOSOTROS</a><a href="#contacto">CONTACTO</a>
+      </nav>
+      <button class="cart-trigger" type="button" id="open-cart" aria-label="Abrir pedido">
+        <span aria-hidden="true">🛒</span> MI PEDIDO <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+  <main>
+    <section class="hero" aria-label="Bienvenida a Búcaros">
+      <div class="hero-text">
+        <div class="hero-text-inner">
+          <span class="eyebrow">🔥 DESDE SIEMPRE, EL SABOR DE BUCARAMANGA</span>
+          <h1>FUEGO.<br>CARNE.<br><em>SABOR.</em></h1>
+          <p>Hamburguesas artesanales, ingredientes auténticos y el sabor de Bucaramanga para compartir. Descubre nuestro menú, arma tu pedido y vive la experiencia BÚCAROS.</p>
+          <a class="cta" href="#menu">VER NUESTRO MENÚ <span aria-hidden="true">↗</span></a>
+          <span class="hero-note">Sitio demostrativo académico · Pedidos y pagos simulados.</span>
+        </div>
+      </div>
+      <div class="hero-photo" role="img" aria-label="Combo de hamburguesa con papas fritas y Coca-Cola"></div>
+    </section>
+    <div class="perks">
+      <div>☀️ &nbsp; EL SABOR DE BUCARAMANGA</div>
+      <div>🔥 &nbsp; PREPARADO AL MOMENTO</div>
+      <div>✦ &nbsp; COMPRA FÁCIL</div>
+    </div>
+    <section class="catalogue container" id="menu">
+      <div class="section-heading">
+        <div><span class="eyebrow">LO MÁS ANTOJABLE</span><h2>Prueba nuestro menú</h2><p>Cuatro opciones deliciosas para armar tu pedido.</p></div>
+        <div class="filters" role="group" aria-label="Filtrar el menú">
+          <button class="filter active" data-filter="todos" aria-pressed="true">Todo</button>
+          <button class="filter" data-filter="comida" aria-pressed="false">Comidas</button>
+          <button class="filter" data-filter="bebida" aria-pressed="false">Bebidas</button>
+        </div>
+      </div>
+      <div class="product-grid" id="product-grid" aria-live="polite"></div>
+    </section>
+    <section class="story" id="nosotros">
+      <div class="container story-grid">
+        <div><span class="eyebrow">HAMBURGUESERÍA BÚCAROS</span><h2>Desde siempre, el sabor de Bucaramanga.</h2></div>
+        <div><p>Una experiencia digital que reúne el espíritu de la hamburguesa artesanal y una compra sencilla. Elige tus favoritos, revisa el carrito y simula una orden desde tu computador o celular.</p><div class="story-points"><span>4 productos del catálogo</span><span>Carrito con total dinámico</span><span>Checkout de demostración</span></div></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="contacto">
+    <div class="container footer-inner">
+      <div><strong>HAMBURGUESERÍA BÚCAROS</strong><p>Una experiencia para descubrir el sabor de Bucaramanga.</p></div>
+      <div><strong>DEMO ACADÉMICA</strong><p>Esta página no recibe pedidos, pagos ni datos reales. Imágenes y marca provistas como recursos del proyecto.</p></div>
+      <a href="#inicio">VOLVER ARRIBA ↑</a>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="cart-drawer" id="drawer" aria-label="Carrito de compras" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="drawer-heading"><h2 id="drawer-title">Tu pedido (<span id="drawer-count">0</span>)</h2><button type="button" class="icon-button" id="close-cart" aria-label="Cerrar pedido">×</button></div>
+    <div class="drawer-content">
+      <div id="cart-step"><div id="cart-list"></div></div>
+      <div id="checkout-step" hidden>
+        <button class="back-button" type="button" id="back-to-cart">← Volver al carrito</button>
+        <h3>Datos de entrega</h3>
+        <p class="disclaimer">Completa con datos ficticios. Esta simulación no guarda ni transmite información personal.</p>
+        <form id="checkout-form">
+          <label for="customer-name">Nombre completo <span>*</span></label><input id="customer-name" name="name" required maxlength="80" autocomplete="off" placeholder="Nombre de prueba" />
+          <label for="customer-address">Dirección de entrega <span>*</span></label><input id="customer-address" name="address" required maxlength="150" autocomplete="off" placeholder="Calle 00 # 00-00" />
+          <label for="customer-phone">Teléfono <span>*</span></label><input id="customer-phone" name="phone" required type="tel" pattern="[0-9+() -]{7,20}" maxlength="20" autocomplete="off" placeholder="300 000 0000" />
+          <fieldset><legend>Método de pago <span>*</span></legend><label class="radio-option"><input type="radio" name="payment" value="Efectivo" required checked /> Efectivo</label><label class="radio-option"><input type="radio" name="payment" value="Transferencia" required /> Transferencia</label></fieldset>
+          <button class="cta cta-block" type="submit">CONFIRMAR PEDIDO DE PRUEBA</button>
+        </form>
+      </div>
+      <div id="confirmation-step" hidden aria-live="polite"></div>
+    </div>
+    <div class="drawer-bottom" id="drawer-bottom">
+      <div class="total-line"><span>Total del pedido</span><strong id="cart-total">$0</strong></div>
+      <button type="button" id="continue-checkout" class="cta cta-block">CONTINUAR AL PEDIDO →</button>
+      <p>Precios en COP · Sin domicilio · Sin pagos reales.</p>
+    </div>
+  </aside>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
