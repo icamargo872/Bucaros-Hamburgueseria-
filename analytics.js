@@ -1,6 +1,7 @@
 /* BÚCAROS | Fase 5: analítica y publicidad con consentimiento explícito.
  * GA4: G-T13R4WM7RE
  * Meta Pixel: 1141804721551321
+ * Contentsquare: d2d919708dd0e
  * No se recopilan datos introducidos en el formulario de pedido.
  * Los pedidos son exclusivamente simulaciones académicas.
  */
@@ -8,7 +9,8 @@
 (function () {
   const GA_ID = 'G-T13R4WM7RE';
   const META_ID = '1141804721551321';
-  const STORAGE_KEY = 'bucaros_consent_v1';
+  const CONTENTSQUARE_TAG = 'd2d919708dd0e';
+  const STORAGE_KEY = 'bucaros_consent_v2';
   const ORDER_STORAGE = 'bucaros_demo_cart';
   const items = [
     {item_id: 'burger', item_name: 'Combo Hamburguesa Doble', price: 28900},
@@ -37,7 +39,7 @@
   consent.setAttribute('role', 'dialog');
   consent.setAttribute('aria-label', 'Preferencias de privacidad');
   consent.innerHTML = `<h2>Privacidad y medición</h2>
-    <p>Esta tienda es una demostración. Con tu permiso usaremos Google Analytics para medir visitas y Meta Pixel para analítica publicitaria. Puedes elegir por separado; no enviamos los datos del formulario de pedido.</p>
+    <p>Esta tienda es una demostración. Con tu permiso, Google Analytics medirá las visitas y Contentsquare analizará clics, desplazamientos y sesiones (incluidas grabaciones con datos del formulario ocultos). Si también lo autorizas, Meta Pixel medirá la publicidad. Puedes rechazar o cambiar tus preferencias. Los pedidos son simulados.</p>
     <div class="bu-buttons">
       <button type="button" data-bu-mode="none">Solo necesarias</button>
       <button type="button" data-bu-mode="analytics">Solo analítica</button>
@@ -54,6 +56,7 @@
   let mode = null;
   let gaLoaded = false;
   let metaLoaded = false;
+  let contentsquareLoaded = false;
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (['none', 'analytics', 'all'].includes(saved)) mode = saved;
@@ -106,6 +109,17 @@
     injectScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID));
     gaEvent('view_item_list', {item_list_name: 'Menú BÚCAROS', items: catalogItems()});
   }
+  function enableContentsquare() {
+    if (contentsquareLoaded) return;
+    contentsquareLoaded = true;
+    // Evitar que las grabaciones de sesión capturen datos escritos
+    // por visitantes en el checkout, aunque sean de demostración.
+    const checkout = document.getElementById('checkout-form');
+    const confirmation = document.getElementById('confirmation-step');
+    if (checkout) checkout.setAttribute('data-cs-mask', '');
+    if (confirmation) confirmation.setAttribute('data-cs-mask', '');
+    injectScript('https://t.contentsquare.net/uxa/' + CONTENTSQUARE_TAG + '.js');
+  }
   function enableMeta() {
     if (metaLoaded) return;
     metaLoaded = true;
@@ -134,7 +148,7 @@
       location.reload();
       return;
     }
-    if (mode === 'analytics' || mode === 'all') enableGoogle();
+    if (mode === 'analytics' || mode === 'all') { enableGoogle(); enableContentsquare(); }
     if (mode === 'all') enableMeta();
   }
 
@@ -148,7 +162,7 @@
   } else {
     privacy.hidden = false;
     // La sesión actual solo registra eventos para las categorías autorizadas.
-    if (mode === 'analytics' || mode === 'all') enableGoogle();
+    if (mode === 'analytics' || mode === 'all') { enableGoogle(); enableContentsquare(); }
     if (mode === 'all') enableMeta();
   }
 
